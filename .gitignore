@@ -1,2 +1,8 @@
 *.o
 trackMain
+GTDATA
+*.spe
+permutation.table
+*.xy
+*.xydy
+*~
