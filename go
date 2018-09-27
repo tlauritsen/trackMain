@@ -61,4 +61,54 @@ fi
 
 fi
 
+if [ $1 = "agata" ]
+then
+
+   echo "convert AGATA data to GT mode2"
+   echo "then track and analyze the data"
+
+   rm GTDATA; ln -s ...somewhere... GTDATA
+
+   echo "agata to GT mode2 (standard name of Global.dat)"
+
+   rm GTDATA/Global.dat
+   ag2mode2 GTDATA/agata.adf GTDATA/Global.dat 0 20000000 100 > GTDATA/ag2mode2.log
+   mv *.agevent GTDATA/
+
+   echo "track GT data mode 2 data (decomposed data), experimental data "
+   echo -n "GTDATA dir:"; (cd GTDATA; pwd -P)
+
+   echo "./trackMain"
+   rm GTDATA/mode1.gtd
+   ./trackMain \
+      track_GT.chat  \
+      GTDATA/Global.dat  \
+      GTDATA/mode1.gtd > GTDATA/trackMain.log
+   ls -lt GTDATA/merged.gtd* GTDATA/mode1.gtd
+
+if [ 1 == 0 ]
+then
+  echo "./GEBSort_nogeb"
+  rm GTDATA/test.root
+  ./GEBSort_nogeb \
+    -input disk GTDATA/mode1.gtd \
+    -rootfile GTDATA/test.root RECREATE \
+    -chat GEBSort.chat > GTDATA/GEBSort.log
+
+   cp *.chat GTDATA/
+
+   ls -lt GTDATA/  | grep -v agevent
+
+   ls -lt GTDATA/merged.gtd* GTDATA/mode1.gtd GTDATA/test.root
+
+   grep "AGATA_data" *.chat | grep -v you | grep -v G4
+   echo "^^^^^ this better be OK"
+   grep singlehitmaxdepth *.chat | grep -v G4
+   echo "^^^^^ this better be 23.5"
+
+fi
+
+fi
+
+
 
