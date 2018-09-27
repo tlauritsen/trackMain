@@ -7,6 +7,9 @@ include $(PLTFMOPT)
 
 all:
 		make trackMain
+		make ag2mode2
+
+#-------------------
 
 trackMain:	trackMain.o ctktk.o setupTrack.o setupTrack_crmat.o track.o \
 		writeTrack_repeat.o writeTrack_addtrack.o ctkStats.o \
@@ -116,8 +119,7 @@ spe_fun.o:	spe_fun.c
 
 ag2mode2:	ag2mode2.c spe_fun.o
 		$(cc) -o $@ $^
-#		go agata
-
+ 
 ag2mode2.c:	ag2mode2.h
 
 

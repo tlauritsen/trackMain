@@ -1,5 +1,6 @@
 *.o
 trackMain
+ag2mode2
 GTDATA
 *.spe
 permutation.table
@@ -7,4 +8,7 @@ permutation.table
 *.xydy
 *~
 *.agevent
+*.list
+ag2mode2
+
 

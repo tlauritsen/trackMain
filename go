@@ -67,12 +67,12 @@ then
    echo "convert AGATA data to GT mode2"
    echo "then track and analyze the data"
 
-   rm GTDATA; ln -s ...somewhere... GTDATA
+   rm GTDATA; ln -s /media/track2018/user/data/AG/source/60Co GTDATA
 
    echo "agata to GT mode2 (standard name of Global.dat)"
 
    rm GTDATA/Global.dat
-   ag2mode2 GTDATA/agata.adf GTDATA/Global.dat 0 20000000 100 > GTDATA/ag2mode2.log
+   ag2mode2 GTDATA/Builder_Run8_replay.adf.short GTDATA/Global.dat 0 20000000 100 > GTDATA/ag2mode2.log
    mv *.agevent GTDATA/
 
    echo "track GT data mode 2 data (decomposed data), experimental data "
@@ -90,10 +90,10 @@ if [ 1 == 0 ]
 then
   echo "./GEBSort_nogeb"
   rm GTDATA/test.root
-  ./GEBSort_nogeb \
+  ../../cur/GEBSort_nogeb \
     -input disk GTDATA/mode1.gtd \
-    -rootfile GTDATA/test.root RECREATE \
-    -chat GEBSort.chat > GTDATA/GEBSort.log
+    -rootfile GTDATA/wsi.root RECREATE \
+    -chat ../../cur/GEBSort.chat > GTDATA/GEBSort.log
 
    cp *.chat GTDATA/
 
@@ -105,6 +105,14 @@ then
    echo "^^^^^ this better be OK"
    grep singlehitmaxdepth *.chat | grep -v G4
    echo "^^^^^ this better be 23.5"
+
+   mv *.list GTDATA
+   mv ag2mode2*.agevent
+
+# to display 
+# rootn.exe
+#   .L ../../cur/GSUtil_cc.so
+#   .x ../../cur/bar.cc
 
 fi
 

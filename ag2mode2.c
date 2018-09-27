@@ -131,7 +131,7 @@ main (int argc, char **argv)
 
   if (argc != 6)
     {
-      printf ("use: %s infile outfile firstev lastev nprint", argv[0]);
+      printf ("use: %s infile outfile firstev lastev nprint\n", argv[0]);
       exit (0);
     };
   minev = atoi (argv[3]);
