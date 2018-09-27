@@ -41,7 +41,7 @@ then
   ls -lt GTDATA/*.root
 fi
 
-    cp *.list GTDATA/
+    mv *.list GTDATA/
     cp *.chat GTDATA/
 
 # to display 
