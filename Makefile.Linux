@@ -1,0 +1,43 @@
+ 
+
+# to make the mapfile work, we specify '--new'
+
+LBITS := $(shell getconf LONG_BIT)
+
+ifeq ($(LBITS),64)
+
+  # do 64 bit stuff here
+
+  ROOTINC = $(shell root-config --cflags --glibs)
+  ROOTLIB = $(shell root-config --new --libs --glibs)
+
+  CCFLAG   = -I. $(ROOTINC) -L. $(ROOTLIB)
+  CC       = g++ -DLINUX $(CCENV) $(CCFLAG) -D_FILE_OFFSET_BITS=64 -DMAC=1 -std=gnu++0x -DISMAC=0
+  cc       = gcc -DLINUX $(CCENV) -D_FILE_OFFSET_BITS=64 -DMAC=1
+
+  TRAILOR  = -lm
+  FF       = f77 -m32 -fbounds-check
+
+  SOCKET = 
+  NSL = -lnsl
+ 
+else
+
+  # do 32 bit stuff here
+
+  ROOTINC = $(shell root-config --cflags)
+  ROOTLIB = $(shell root-config --libs)
+
+  CCFLAG   = -I. $(ROOTINC) $(ROOTLIB)
+  CC       = g++ -DLINUX $(CCENV) $(CCFLAG) -D_FILE_OFFSET_BITS=64 -DMAC=0 -std=gnu++0x
+  cc       = gcc -DLINUX $(CCENV) -D_FILE_OFFSET_BITS=64 -DMAC=0
+
+
+  TRAILOR  = -lm
+  FF       = f77 -m32 -fbounds-check
+
+  SOCKET = 
+  NSL = -lnsl
+
+endif
+

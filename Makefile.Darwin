@@ -1,0 +1,23 @@
+
+ROOTINC = $(shell root-config --cflags)
+ROOTLIB = $(shell root-config --libs)
+# ^^^^NOTE: do not add --new to ROOTLIB on MAC.
+#     it will crash GEBSort
+
+# warning: '--new' allows for map files but
+# it may upset things on some MACs. If in
+# trouble, leave '--new' out.
+
+# warning: '-w' suppress warning
+ 
+CCFLAG   = -I. -I$(ROOTSYS)/include -L. -L$(ROOTSYS)/lib -DMAC=1 -DISMAC=1
+CC       = /usr/bin/g++ -w $(CCENV) $(CCFLAG) $(ROOTINC) $(ROOTLIB)
+cc       = /usr/bin/gcc -w $(CCENV) -DISMAC=1
+
+
+
+TRAILOR  = -lm
+SOCKET = 
+NSL = -lnsl
+
+
