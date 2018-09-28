@@ -61,30 +61,60 @@ fi
 
 fi
 
+
+
+
+
+
+
 if [ $1 = "agata" ]
 then
+
+# be sure to use the proper rotational/translational
+# matrix (GANIL or GSI)  and change the range for the
+# single interaction range
 
    echo "convert AGATA data to GT mode2"
    echo "then track and analyze the data"
 
-   rm GTDATA; ln -s /media/track2018/user/data/AG/source/60Co GTDATA
+   rm GTDATA; ln -s /media/track2018/user/data_ana/AG/source/60Co GTDATA
 
    echo "agata to GT mode2 (standard name of Global.dat)"
 
    rm GTDATA/Global.dat
-   ag2mode2 GTDATA/Builder_Run8_replay.adf.short GTDATA/Global.dat 0 20000000 100 > GTDATA/ag2mode2.log
+   ag2mode2 GTDATA/Builder_Run8_replay.adf GTDATA/Global.dat 0 20000000 100 > GTDATA/ag2mode2.log
    mv *.agevent GTDATA/
 
    echo "track GT data mode 2 data (decomposed data), experimental data "
    echo -n "GTDATA dir:"; (cd GTDATA; pwd -P)
+
+if [ 1 == 0 ]
+then
+
+# fix timestamp problem in GT data
+
+  mv GTDATA/Global.dat GTDATA/Global.dat.orig
+  ../../cur/GEBMerge \
+  ../../cur/GEBMerge.chat \
+  GTDATA/Global.dat \
+  GTDATA/Global.dat.orig 2> GTDATA/GEBMerge.log
+  mv TS.list* GTDATA
+  mv permutation_selection.log GTDATA
+  
+fi
+
+# this may be noisy if you don't run GEBMerge on the
+# translated GT mode2 data
 
    echo "./trackMain"
    rm GTDATA/mode1.gtd
    ./trackMain \
       track_GT.chat  \
       GTDATA/Global.dat  \
-      GTDATA/mode1.gtd > GTDATA/trackMain.log
+      GTDATA/mode1.gtd 
+#> GTDATA/trackMain.log
    ls -lt GTDATA/merged.gtd* GTDATA/mode1.gtd
+   mv ag2mode2*.agevent GTDATA
 
 if [ 1 == 0 ]
 then
@@ -107,7 +137,6 @@ then
    echo "^^^^^ this better be 23.5"
 
    mv *.list GTDATA
-   mv ag2mode2*.agevent
 
 # to display 
 # rootn.exe
@@ -115,6 +144,7 @@ then
 #   .x ../../cur/bar.cc
 
 fi
+
 
 fi
 
